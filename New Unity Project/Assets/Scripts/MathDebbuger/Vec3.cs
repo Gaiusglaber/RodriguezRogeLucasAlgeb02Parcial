@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Runtime.CompilerServices;
+
 namespace CustomMath
 {
     public struct Vec3 : IEquatable<Vec3>
@@ -137,7 +139,29 @@ namespace CustomMath
         }
         public static Vec3 ClampMagnitude(Vec3 vector, float maxLength)
         {
-            throw new NotImplementedException();
+            if (Magnitude(vector) > maxLength)
+            {
+                if (vector.x > maxLength)
+                {
+                    vector.x = maxLength;
+                }
+
+                if (vector.y > maxLength)
+                {
+                    vector.y = maxLength;
+                }
+
+                if (vector.z > maxLength)
+                {
+                    vector.z = maxLength;
+                }
+            }
+            else
+            {
+                vector = new Vec3((float) Math.Sqrt(vector.x / 2), (float) Math.Sqrt(vector.y / 2),
+                    (float) Math.Sqrt(vector.z / 2));
+            }
+            return vector;
         }
         public static float Magnitude(Vec3 vector)
         {
@@ -157,10 +181,17 @@ namespace CustomMath
         }
         public static float Dot(Vec3 a, Vec3 b)
         {
-            return (float)(Magnitude(a)* Magnitude(b)*Math.Acos((double)0));
+            return (a.x*b.x)+(a.y*b.y)+(a.z*b.z);
         }
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
+            if (t < 0)
+            {
+                t = 0;
+            }else if (t > 1)
+            {
+                t = 1;
+            }
             Vec3 vector;
             vector.x = a.x + (t * (b.x - a.x));
             vector.y = a.y + (t * (b.y - a.y));
@@ -169,7 +200,11 @@ namespace CustomMath
         }
         public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
         {
-            throw new NotImplementedException();
+            Vec3 vector;
+            vector.x = a.x + (t * (b.x - a.x));
+            vector.y = a.y + (t * (b.y - a.y));
+            vector.z = a.z + (t * (b.z - a.z));
+            return vector;
         }
         public static Vec3 Max(Vec3 a, Vec3 b)
         {
@@ -191,25 +226,29 @@ namespace CustomMath
         {
             return (float)Math.Sqrt(Magnitude(vector));
         }
-        public static Vec3 Project(Vec3 vector, Vec3 onNormal) 
+        public static Vec3 Project(Vec3 vector, Vec3 onNormal)
         {
-            throw new NotImplementedException();
+            return onNormal*(Dot(vector,onNormal)/Magnitude(onNormal));
         }
-        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal) 
+        public static Vec3 Reflect(Vec3 inDirection, Vec3 inNormal)
         {
-            throw new NotImplementedException();
+            return 2 * (Dot(inNormal, inDirection) * (inNormal - inDirection));
         }
         public void Set(float newX, float newY, float newZ)
         {
-            throw new NotImplementedException();
+            this.x = newX;
+            this.y = newY;
+            this.z = newZ;
         }
         public void Scale(Vec3 scale)
         {
-            throw new NotImplementedException();
+            this.x *= scale.x;
+            this.y *= scale.y;
+            this.z *= scale.z;
         }
         public void Normalize()
         {
-            throw new NotImplementedException();
+            this /= Magnitude(this);
         }
         #endregion
 
