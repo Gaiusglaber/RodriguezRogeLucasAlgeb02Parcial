@@ -13,9 +13,9 @@ namespace CustomMath
         public float y;
         public float z;
 
-        public float sqrMagnitude { get { throw new NotImplementedException(); } }
-        public Vector3 normalized { get { throw new NotImplementedException(); } }
-        public float magnitude { get { throw new NotImplementedException(); } }
+        public float sqrMagnitude { get { return x * x + y * y + z * z; } }
+        public Vec3 normalized { get { return Vector3.Normalize(this); } }
+        public float magnitude { get { return (float)Math.Sqrt(x * x + y * y + z * z); } }
         #endregion
 
         #region constants
@@ -93,25 +93,24 @@ namespace CustomMath
 
         public static Vec3 operator -(Vec3 leftV3, Vec3 rightV3)
         {
-            throw new NotImplementedException();
+            return new Vec3(leftV3.x - rightV3.x, leftV3.y - rightV3.y, leftV3.z - rightV3.z);
         }
 
         public static Vec3 operator -(Vec3 v3)
         {
-            throw new NotImplementedException();
+            return new Vec3((-v3.x), (-v3.y), (-v3.z));
         }
-
         public static Vec3 operator *(Vec3 v3, float scalar)
         {
-            throw new NotImplementedException();
+            return new Vec3(v3.x * scalar, v3.y * scalar, v3.z * scalar);
         }
         public static Vec3 operator *(float scalar, Vec3 v3)
         {
-            throw new NotImplementedException();
+            return new Vec3(v3.x * scalar, v3.y * scalar, v3.z * scalar);
         }
         public static Vec3 operator /(Vec3 v3, float scalar)
         {
-            throw new NotImplementedException();
+            return new Vec3(v3.x / scalar, v3.y / scalar, v3.z / scalar);
         }
 
         public static implicit operator Vector3(Vec3 v3)
@@ -121,7 +120,12 @@ namespace CustomMath
 
         public static implicit operator Vector2(Vec3 v2)
         {
-            throw new NotImplementedException();
+            return new Vector2(v2.x, v2.y);
+        }
+
+        public static implicit operator Vec3(Vector3 v3)
+        {
+            return new Vec3(v3.x, v3.y, v3.z);
         }
         #endregion
 
@@ -185,13 +189,7 @@ namespace CustomMath
         }
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
-            if (t < 0)
-            {
-                t = 0;
-            }else if (t > 1)
-            {
-                t = 1;
-            }
+            t = Mathf.Clamp01(t);
             Vec3 vector;
             vector.x = a.x + (t * (b.x - a.x));
             vector.y = a.y + (t * (b.y - a.y));
@@ -269,5 +267,7 @@ namespace CustomMath
             return x.GetHashCode() ^ (y.GetHashCode() << 2) ^ (z.GetHashCode() >> 2);
         }
         #endregion
+
+
     }
 }

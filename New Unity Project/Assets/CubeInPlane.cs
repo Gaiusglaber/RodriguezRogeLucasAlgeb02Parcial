@@ -30,7 +30,7 @@ public class CubeInPlane : MonoBehaviour
         plane5 = new Plane(point1, point5);
         plane6 = new Plane(point2, point6);
 
-        plane1.SetNormalAndPosition(plane1.normal,cube.transform.position);
+        plane1.SetNormalAndPosition(plane1.normal, cube.transform.position);
         plane2.SetNormalAndPosition(plane2.normal, cube.transform.position);
         plane3.SetNormalAndPosition(plane3.normal, cube.transform.position);
         plane4.SetNormalAndPosition(plane4.normal, cube.transform.position);

@@ -1,27 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using CustomMath;
 public class NewVector : MonoBehaviour
 {
     public enum Ejercicios { Uno, Dos, Tres, Cuatro, Cinco, Seis, Siete, Ocho, Nueve, Diez};
-
-    public Vector3 a;
-    public Vector3 b;
-    public Vector3 c;
+    [SerializeField] public Vector3 A;
+    [SerializeField] public Vector3 B;
+    [SerializeField] public Vec3 a;
+    [SerializeField] public Vec3 b;
+    [SerializeField] public Vec3 c;
+    [SerializeField] public float aux = 0;
     public Ejercicios ej;
+    private void Start()
+    {
+        a = A;
+        b = B;
+        MathDebbuger.Vector3Debugger.AddVector(a, "A");
+        MathDebbuger.Vector3Debugger.AddVector(b, "B");
+        MathDebbuger.Vector3Debugger.AddVector(c, "C");
+        MathDebbuger.Vector3Debugger.EnableEditorView();
+    }
     public void Update()
     {
-        switch (ej){
+        a = A;
+        b = B;
+        switch (ej)
+        {
             case Ejercicios.Uno:
-                c.x = a.x + b.x;
-                c.y = a.y + b.y;
-                c.z = a.z + b.z;
+                c = a + b;
                 break;
             case Ejercicios.Dos:
-                c.x = a.x - b.x;
-                c.y = a.y - b.y;
-                c.z = a.z - b.z;
+                c = b - a;
                 break;
             case Ejercicios.Tres:
                 c.x = a.x * b.x;
@@ -29,92 +39,36 @@ public class NewVector : MonoBehaviour
                 c.z = a.z * b.z;
                 break;
             case Ejercicios.Cuatro:
-                c.x = a.y * b.z - a.z - b.y;
-                c.y = a.z * b.x - a.x - b.z;
-                c.z = a.x * b.y - a.y - b.x;
+                c = Vec3.Cross(a, b);
                 break;
             case Ejercicios.Cinco:
-                if (a.x > b.x)
-                {
-                    if (c.x < a.x)
-                    {
-                        c.x += 0.1f;
-                    }
-                    else
-                    {
-                        c.x = a.x;
-                    }
-                }
-                else
-                {
-                    if (c.x < b.x)
-                    {
-                        c.x += 0.1f;
-                    }
-                    else
-                    {
-                        c.x = b.x;
-                    }
-                }
-                if (a.y > b.y)
-                {
-                    if (c.y < a.y)
-                    {
-                        c.y += 0.1f;
-                    }
-                    else
-                    {
-                        c.y = a.y;
-                    }
-                }
-                else
-                {
-                    if (c.y < b.y)
-                    {
-                        c.y += 0.1f;
-                    }
-                    else
-                    {
-                        c.y = b.y;
-                    }
-                }
-                if (a.z > b.z)
-                {
-                    if (c.z < a.z)
-                    {
-                        c.z += 0.1f;
-                    }
-                    else
-                    {
-                        c.z = a.z;
-                    }
-                }
-                else
-                {
-                    if (c.z < b.z)
-                    {
-                        c.z += 0.1f;
-                    }
-                    else
-                    {
-                        c.z = b.z;
-                    }
-                }// incorrecto
+                aux += Time.deltaTime;
+                c = Vec3.Lerp(a, b, aux);
+                if (aux > 1) { aux = 0; }
                 break;
             case Ejercicios.Seis:
-                c.x = (a.x < b.x) ? a.x : b.x;
-                c.y = (a.y < b.y) ? a.y : b.y;
-                c.z = (a.z < b.z) ? a.z : b.z;
+                c=Vec3.Max(a, b);
                 break;
             case Ejercicios.Siete:
+                c = Vec3.Project(a, b);
                 break;
             case Ejercicios.Ocho:
-                c.x = a.x - b.x;
+                c = (a + b).normalized * Vec3.Distance(a, b);
                 break;
             case Ejercicios.Nueve:
+                c = Vec3.Reflect(a, b).normalized;
                 break;
             case Ejercicios.Diez:
+                aux += Time.deltaTime;
+                c = Vec3.LerpUnclamped(a, b, aux);
                 break;
         }
+        MathDebbuger.Vector3Debugger.UpdatePosition("C", c);
+        MathDebbuger.Vector3Debugger.UpdatePosition("B", b);
+        MathDebbuger.Vector3Debugger.UpdatePosition("A", a);
+
+        MathDebbuger.Vector3Debugger.UpdateColor("C", Color.blue);
+        MathDebbuger.Vector3Debugger.UpdateColor("B", Color.white);
+        MathDebbuger.Vector3Debugger.UpdateColor("A", Color.black);
     }
 }

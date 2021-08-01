@@ -36,7 +36,6 @@ public class FrustumCulling : MonoBehaviour
         planes[4].Set3Points(points[1], points[2], points[5]);
         //right
         planes[5].Set3Points(points[0], points[3], points[5]);
-        //no pude encontrar una manera de dibujar los planos
     }
 
     void Update()
