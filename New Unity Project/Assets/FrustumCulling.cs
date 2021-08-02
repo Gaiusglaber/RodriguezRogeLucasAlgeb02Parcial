@@ -5,7 +5,7 @@ using UnityEngine;
 public class FrustumCulling : MonoBehaviour
 {
     public Vector3[] points = new Vector3[8];
-    
+    public GameObject cube;
     public float initWith = 3.0f;
     public float initHeight = 2.0f;
     public float lastWidth = 6.0f;
@@ -35,11 +35,29 @@ public class FrustumCulling : MonoBehaviour
         //left
         planes[4].Set3Points(points[1], points[2], points[5]);
         //right
-        planes[5].Set3Points(points[0], points[3], points[5]);
-    }
+        planes[5].Set3Points(points[0], points[3], points[7]);
 
+        planes[0].Flip();
+        planes[5].Flip();
+    }
+    private bool IsInsidePlane()
+    {
+        //como los lados de los planos "miran" para afuera !GetSide(Vector3) es para la cara inexistente de adentro 
+        return !planes[0].GetSide(cube.transform.position) && !planes[1].GetSide(cube.transform.position) &&
+               !planes[2].GetSide(cube.transform.position)
+               && !planes[3].GetSide(cube.transform.position) && !planes[4].GetSide(cube.transform.position) &&
+               !planes[5].GetSide(cube.transform.position);
+    }
     void Update()
     {
+        if (IsInsidePlane())
+        {
+            Debug.Log("El cubo esta adentro de los planos");
+        }
+        else
+        {
+            Debug.Log("El cubo esta afuera de los planos");
+        }
         Debug.DrawLine(points[0], points[1]);
         Debug.DrawLine(points[1], points[2]);
         Debug.DrawLine(points[2], points[3]);

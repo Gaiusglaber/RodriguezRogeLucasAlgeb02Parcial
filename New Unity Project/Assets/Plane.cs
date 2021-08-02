@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-
+using System;
 public struct plane
 {
+    public static implicit operator Plane(plane pl)
+    {
+        return new Plane(pl.m_Normal,pl.distance);
+    }
     Vector3 m_Normal;
     float m_Distance;
     public Vector3 normal
@@ -43,5 +46,8 @@ public struct plane
     {
         var pointToPlaneDistance = Vector3.Dot(m_Normal, point) + m_Distance;
         return point - (m_Normal * pointToPlaneDistance);
+    }
+    public bool GetSide(Vector3 point) {
+        return Vector3.Dot(m_Normal, point) + m_Distance > 0.0F;
     }
 }

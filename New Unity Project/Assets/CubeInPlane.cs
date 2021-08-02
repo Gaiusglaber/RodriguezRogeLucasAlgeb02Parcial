@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class CubeInPlane : MonoBehaviour
 {
+    Vector3 point1 = new Vector3(-4, -4, -4);
+    Vector3 point2 = new Vector3(4, -4, -4);
+    Vector3 point3 = new Vector3(4, 4, -4);
+    Vector3 point4 = new Vector3(-4, 4, -4);
+    Vector3 point5 = new Vector3(-4, -4, 4);
+    Vector3 point6 = new Vector3(4, -4, 4);
+    Vector3 point7 = new Vector3(4, 4, 4);
+    Vector3 point8 = new Vector3(-4, 4, 4);
     public Plane plane1;
     public Plane plane2;
     public Plane plane3;
@@ -14,14 +22,6 @@ public class CubeInPlane : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vector3 point1 = new Vector3(-4, -4, -4);
-        Vector3 point2 = new Vector3(4, -4, -4);
-        Vector3 point3 = new Vector3(4, 4, -4);
-        Vector3 point4 = new Vector3(-4, 4, -4);
-        Vector3 point5 = new Vector3(-4, -4, 4);
-        Vector3 point6 = new Vector3(4, -4, 4);
-        Vector3 point7 = new Vector3(4, 4, 4);
-        Vector3 point8 = new Vector3(-4, 4, 4);
 
         plane1 = new Plane(point4, point8);
         plane2 = new Plane(point1, point6);
@@ -36,6 +36,8 @@ public class CubeInPlane : MonoBehaviour
         plane4.SetNormalAndPosition(plane4.normal, cube.transform.position);
         plane5.SetNormalAndPosition(plane5.normal, cube.transform.position);
         plane6.SetNormalAndPosition(plane6.normal, cube.transform.position);
+
+        plane6.Flip();
     }
 
     private bool IsInsidePlane()
@@ -57,5 +59,19 @@ public class CubeInPlane : MonoBehaviour
         {
             Debug.Log("El cubo esta afuera de los planos");
         }
+        Debug.DrawLine(point1, point2);
+        Debug.DrawLine(point2, point3);
+        Debug.DrawLine(point3, point4);
+        Debug.DrawLine(point1, point4);
+
+        Debug.DrawLine(point5, point1);
+        Debug.DrawLine(point6, point2);
+        Debug.DrawLine(point7, point3);
+        Debug.DrawLine(point8, point4);
+
+        Debug.DrawLine(point5, point6);
+        Debug.DrawLine(point6, point7);
+        Debug.DrawLine(point7, point8);
+        Debug.DrawLine(point5, point8);
     }
 }
